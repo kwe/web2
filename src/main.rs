@@ -5,10 +5,8 @@ use axum::routing::get;
 use axum::Router;
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
-use fake::faker::name::raw::*;
-use fake::locales::*;
 use fake::Fake;
-
+use fake::faker::lorem::en::Words;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -26,7 +24,8 @@ async fn hello(Path(name): Path<String>) -> impl IntoResponse {
 }
 
 async fn wow() -> impl IntoResponse {
-    let message = Name(EN).fake();
+    let words:Vec<String> = Words(3..15).fake();
+    let message = words.join(" ");
     WowTemplate { message}
 }
 
